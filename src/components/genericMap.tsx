@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState, useRef } from 'react'
+import React, { FC, useRef, useContext } from 'react'
 import Leaflet from "leaflet";
 import { MapContainer, Marker, TileLayer, useMapEvent } from "react-leaflet"
 
 import { Container } from './styles'
-import { Coords } from '../types/geolocationTypes'
+import { LocationContext } from '../contexts/LocationContext'
 
 const mapPinIcon = Leaflet.icon({
     iconUrl: 'https://raw.githubusercontent.com/rocketseat-content/blog-react-maps-leaflet/83ab06c13ba7bd105d3a7d901b2a52002c311cb0/src/pin.svg',
@@ -12,24 +12,12 @@ const mapPinIcon = Leaflet.icon({
     popupAnchor: [170, 2],
 });
 
-interface props {
-    position?: Coords
-}
 
-const GenericMacp: FC<props> = ({ position }) => {
+const GenericMacp: FC = () => {
+
+    const { position } = useContext(LocationContext)
 
     const animateRef = useRef(false)
-
-    useEffect(() => {
-        if (position?.lat) {
-            console.log('generic map', position)
-            setLatLgn(position)
-        }
-
-    }, [position])
-
-    const [latLgn, setLatLgn] = useState<Coords>()
-
 
     function SetViewOnClick({ animateRef }: any) {
         const map = useMapEvent('click', (e) => {
@@ -43,9 +31,9 @@ const GenericMacp: FC<props> = ({ position }) => {
 
     return (
         <Container>
-            {latLgn && latLgn.lat && latLgn.lgn ? (<>
+            {position && position.lat && position.lgn ? (<>
                 <MapContainer
-                    center={[latLgn.lat, latLgn.lgn]}
+                    center={[position.lat, position.lgn]}
                     zoom={14}
                     maxZoom={20}
                     zoomControl={false}
@@ -65,7 +53,7 @@ const GenericMacp: FC<props> = ({ position }) => {
                     <SetViewOnClick animateRef={animateRef} />
                     <Marker
                         icon={mapPinIcon}
-                        position={[latLgn.lat, latLgn.lgn]}
+                        position={[position.lat, position.lgn]}
                     ></Marker>
                 </MapContainer>
             </>) : (

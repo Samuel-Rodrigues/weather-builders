@@ -1,12 +1,24 @@
-import React, { useState, createContext } from 'react'
-import { Coords } from '../types/geolocationTypes'
+import React, { useState, createContext, useEffect } from 'react'
 import Geocode from "react-geocode";
+import { Coords, Forecast } from '../types/geolocationTypes'
+
+import { fetchOnecall, fetchForecast } from '../services/weatherMapApi'
 
 export const LocationContext = createContext<{ position?: Coords }>({});
 
 export const LocationProvider = (props: any) => {
 
-    (async () => {
+    const [position, setPosition] = useState<Coords>()
+
+    useEffect(() => {
+        locationRequest()
+    }, [])
+
+    useEffect(() => {
+        requestWeather()
+    }, [position])
+
+    function locationRequest() {
         var options = {
             enableHighAccuracy: true,
             timeout: 5000,
@@ -15,8 +27,7 @@ export const LocationProvider = (props: any) => {
 
         function success(pos: any) {
             var crd = pos.coords;
-            setPosition({ lat: crd.latitude, lgn: crd.longitude, approximateMeters: crd.accuracy })
-            getAddress(crd.latitude, crd.longitude)
+            getAddress(crd.latitude, crd.longitude, crd.accuracy)
         };
 
         function error(err: any) {
@@ -28,18 +39,19 @@ export const LocationProvider = (props: any) => {
         } else {
             alert("Sinto muito, mas os serviços de geolocalização não são compatíveis com seu navegador.");
         }
-    })()
+    }
 
-    const getAddress = (lat: number, lgn: number) => {
+    const getAddress = (lat: number, lgn: number, accuracy: number) => {
         Geocode.setApiKey(String(process.env.REACT_APP_KEY_GOOGLE));
         Geocode.enableDebug();
 
         Geocode.fromLatLng(String(lat), String(lgn)).then(
             response => {
                 const { address_components } = response.results[0];
-
                 setPosition({
-                    ...position,
+                    lat: lat,
+                    lgn: lgn,
+                    approximateMeters: accuracy,
                     address: {
                         number: address_components[0].long_name || '',
                         street: address_components[1].long_name || '',
@@ -56,7 +68,42 @@ export const LocationProvider = (props: any) => {
         );
     }
 
-    const [position, setPosition] = useState<Coords>()
+    const requestWeather = async () => {
+        if (position?.lat && position.lgn) {
+            const { lat, lgn, address } = position
+            const { alerts, current } = await fetchOnecall(lat, lgn)
+
+            let forecasts: Array<Forecast> = []
+            
+            if (address) {
+                forecasts = await fetchForecast(address?.city, address?.postal_code)
+            }
+
+            setPosition({
+                ...position,
+                weatherCurrent: {
+                    ...current,
+                    alerts: alerts
+                },
+                forecasts: forecasts
+            })
+
+
+            // fetchOnecall(lat, lgn).then((res) => {
+            //     setPosition({
+            //         ...position,
+            //         weatherCurrent: {
+            //             ...res.current,
+            //             alerts: res.alerts
+            //         }
+            //     })
+            // })
+        }
+    }
+
+    const requestForecast = () => {
+
+    }
 
     return (
         <LocationContext.Provider value={{ position }}>

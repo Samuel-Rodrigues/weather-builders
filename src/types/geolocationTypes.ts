@@ -3,6 +3,8 @@ export interface Coords {
     lgn?: number
     approximateMeters?: number
     address?: Address
+    weatherCurrent?: WeatherCurrent
+    forecasts?: Array<Forecast>
 }
 
 interface Address {
@@ -12,4 +14,36 @@ interface Address {
     number: string
     country: string
     postal_code: string
+}
+
+export interface WeatherCurrent {
+    humidity: number
+    temp: number
+    wind_speed: number
+    alerts?: Array<Alert>
+    weather: Weather
+}
+
+export interface Rain {
+    '1h'?: number
+    '3h'?: number
+}
+
+export interface Weather {
+    description: string
+    main: string
+}
+
+export interface Alert {
+    description: string
+    event: string
+}
+
+export interface Forecast {
+    main: { temp_min: number, temp_max: number, humidity: number }
+    weather: { main: string, description: string };
+    clouds: { all: number }
+    wind: { speed: number, deg: number }
+    dt_txt: string
+    rain: Rain
 }
