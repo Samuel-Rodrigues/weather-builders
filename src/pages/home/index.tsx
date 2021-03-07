@@ -1,10 +1,8 @@
 import React, { FC } from 'react'
 
-import GenericMap from '../../components/genericMap'
-
-
 import Card from './Card'
 import { IndexContainer } from './styles'
+import GenericMap from '../../components/genericMap'
 
 export const Home: FC = () => {
 

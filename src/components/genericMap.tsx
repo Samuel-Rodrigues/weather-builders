@@ -15,7 +15,7 @@ const mapPinIcon = Leaflet.icon({
 
 const GenericMacp: FC = () => {
 
-    const { position } = useContext(LocationContext)
+    const { locationData } = useContext(LocationContext)
 
     const animateRef = useRef(false)
 
@@ -31,9 +31,9 @@ const GenericMacp: FC = () => {
 
     return (
         <Container>
-            {position && position.lat && position.lgn ? (<>
+            {locationData && locationData.lat && locationData.lgn ? (<>
                 <MapContainer
-                    center={[position.lat, position.lgn]}
+                    center={[locationData.lat, locationData.lgn]}
                     zoom={15}
                     maxZoom={20}
                     zoomControl={false}
@@ -53,7 +53,7 @@ const GenericMacp: FC = () => {
                     <SetViewOnClick animateRef={animateRef} />
                     <Marker
                         icon={mapPinIcon}
-                        position={[position.lat, position.lgn]}
+                        position={[locationData.lat, locationData.lgn]}
                     ></Marker>
                 </MapContainer>
             </>) : (

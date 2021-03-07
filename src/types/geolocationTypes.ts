@@ -1,4 +1,4 @@
-export interface Coords {
+export interface LocationData {
     lat?: number
     lgn?: number
     approximateMeters?: number

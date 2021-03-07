@@ -1,5 +1,11 @@
 import axios from 'axios'
-import { Alert, WeatherCurrent, Forecast, Rain } from '../types/geolocationTypes'
+
+import {
+    Rain,
+    Alert,
+    Forecast,
+    WeatherCurrent,
+} from '../types/geolocationTypes'
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_URL_WEATHERMAP,
@@ -24,16 +30,12 @@ export const fetch = async<T>(
     }
 }
 
-export const fetchWeather = async (city: string, stateCode: string) =>
-    await fetch('/weather', { q: `${city},${stateCode}` })
-
 export const fetchForecast = async (city: string, stateCode: string) => {
-    const { list } = <{ list: Array<Forecast> }>await fetch('/forecast', { q: `${city},${stateCode}` })
+    const { list } = await fetch('/forecast', { q: `${city},${stateCode}` }) as { list: Array<Forecast> }
     return list
 }
 
 export const fetchOnecall = async (lat: number, lon: number) => {
-    const { alerts, current, rain } = <{ current: WeatherCurrent, alerts: Array<Alert>, rain: Rain }>await fetch('/onecall', { lat, lon })
+    const { alerts, current, rain } = await fetch('/onecall', { lat, lon }) as { current: WeatherCurrent, alerts: Array<Alert>, rain: Rain }
     return { alerts, current, rain }
-    //eturn response
 }

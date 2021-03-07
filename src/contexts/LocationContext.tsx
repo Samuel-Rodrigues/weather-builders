@@ -1,11 +1,11 @@
 import React, { useState, createContext, useEffect } from 'react'
 import Geocode from "react-geocode";
-import { Coords, Forecast } from '../types/geolocationTypes'
+import { LocationData, Forecast } from '../types/geolocationTypes'
 
 import { fetchOnecall, fetchForecast } from '../services/weatherMapApi'
 
 export const LocationContext = createContext<{
-    position?: Coords
+    locationData?: LocationData
     loadingLocation?: boolean
     loadingForescast?: boolean
     erroLocation?: string
@@ -14,7 +14,7 @@ export const LocationContext = createContext<{
 
 export const LocationProvider = (props: any) => {
 
-    const [position, setPosition] = useState<Coords>()
+    const [locationData, setLocationData] = useState<LocationData>()
     const [loadingForescast, setLoadingForescast] = useState<boolean>(false)
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true)
     const [erroLocation, setErroLocation] = useState<string>('')
@@ -24,10 +24,10 @@ export const LocationProvider = (props: any) => {
     }, [])
 
     useEffect(() => {
-        if (position?.lat && !position?.weatherCurrent) {
+        if (locationData?.lat && !locationData?.weatherCurrent) {
             requestWeather()
         }
-    }, [position])
+    }, [locationData])
 
     function locationRequest() {
         var options = {
@@ -68,7 +68,7 @@ export const LocationProvider = (props: any) => {
         Geocode.fromLatLng(String(lat), String(lgn)).then(
             response => {
                 const { address_components } = response.results[0];
-                setPosition({
+                setLocationData({
                     lat: lat,
                     lgn: lgn,
                     approximateMeters: accuracy,
@@ -90,18 +90,18 @@ export const LocationProvider = (props: any) => {
 
     const requestWeather = async () => {
         setLoadingForescast(true)
-        if (position?.lat && position.lgn) {
-            const { lat, lgn, address } = position
+        if (locationData?.lat && locationData.lgn) {
+            const { lat, lgn, address } = locationData
             const { alerts, current, rain } = await fetchOnecall(lat, lgn)
-            
+
             let forecasts: Array<Forecast> = []
 
             if (address) {
                 forecasts = await fetchForecast(address?.city, address?.postal_code)
             }
 
-            setPosition({
-                ...position,
+            setLocationData({
+                ...locationData,
                 weatherCurrent: {
                     ...current,
                     alerts: alerts,
@@ -115,7 +115,7 @@ export const LocationProvider = (props: any) => {
     }
 
     return (
-        <LocationContext.Provider value={{ position, loadingForescast, loadingLocation, erroLocation, locationRequest }}>
+        <LocationContext.Provider value={{ locationData, loadingForescast, loadingLocation, erroLocation, locationRequest }}>
             { props.children}
         </LocationContext.Provider >
     )
