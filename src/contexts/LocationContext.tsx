@@ -4,18 +4,29 @@ import { Coords, Forecast } from '../types/geolocationTypes'
 
 import { fetchOnecall, fetchForecast } from '../services/weatherMapApi'
 
-export const LocationContext = createContext<{ position?: Coords }>({});
+export const LocationContext = createContext<{
+    position?: Coords
+    loadingLocation?: boolean
+    loadingForescast?: boolean
+    erroLocation?: string
+    locationRequest?: () => void
+}>({});
 
 export const LocationProvider = (props: any) => {
 
     const [position, setPosition] = useState<Coords>()
+    const [loadingForescast, setLoadingForescast] = useState<boolean>(false)
+    const [loadingLocation, setLoadingLocation] = useState<boolean>(true)
+    const [erroLocation, setErroLocation] = useState<string>('')
 
     useEffect(() => {
         locationRequest()
     }, [])
 
     useEffect(() => {
-        requestWeather()
+        if (position?.lat && !position?.weatherCurrent) {
+            requestWeather()
+        }
     }, [position])
 
     function locationRequest() {
@@ -27,21 +38,30 @@ export const LocationProvider = (props: any) => {
 
         function success(pos: any) {
             var crd = pos.coords;
+            setLoadingLocation(false)
+            setErroLocation('')
             getAddress(crd.latitude, crd.longitude, crd.accuracy)
         };
 
         function error(err: any) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
+            setErroLocation('Erro ao obter sua localização')
+            setLoadingLocation(false)
         };
 
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(success, error, options);
         } else {
-            alert("Sinto muito, mas os serviços de geolocalização não são compatíveis com seu navegador.");
+            setErroLocation('Este navegador não tem suporte a localização')
+            setLoadingLocation(false)
         }
+
+
+
     }
 
     const getAddress = (lat: number, lgn: number, accuracy: number) => {
+        setLoadingForescast(true)
         Geocode.setApiKey(String(process.env.REACT_APP_KEY_GOOGLE));
         Geocode.enableDebug();
 
@@ -69,12 +89,13 @@ export const LocationProvider = (props: any) => {
     }
 
     const requestWeather = async () => {
+        setLoadingForescast(true)
         if (position?.lat && position.lgn) {
             const { lat, lgn, address } = position
-            const { alerts, current } = await fetchOnecall(lat, lgn)
-
-            let forecasts: Array<Forecast> = []
+            const { alerts, current, rain } = await fetchOnecall(lat, lgn)
             
+            let forecasts: Array<Forecast> = []
+
             if (address) {
                 forecasts = await fetchForecast(address?.city, address?.postal_code)
             }
@@ -83,30 +104,18 @@ export const LocationProvider = (props: any) => {
                 ...position,
                 weatherCurrent: {
                     ...current,
-                    alerts: alerts
+                    alerts: alerts,
+                    rain: rain
                 },
                 forecasts: forecasts
             })
 
-
-            // fetchOnecall(lat, lgn).then((res) => {
-            //     setPosition({
-            //         ...position,
-            //         weatherCurrent: {
-            //             ...res.current,
-            //             alerts: res.alerts
-            //         }
-            //     })
-            // })
+            setLoadingForescast(false)
         }
     }
 
-    const requestForecast = () => {
-
-    }
-
     return (
-        <LocationContext.Provider value={{ position }}>
+        <LocationContext.Provider value={{ position, loadingForescast, loadingLocation, erroLocation, locationRequest }}>
             { props.children}
         </LocationContext.Provider >
     )

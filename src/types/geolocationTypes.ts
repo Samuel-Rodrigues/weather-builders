@@ -21,7 +21,8 @@ export interface WeatherCurrent {
     temp: number
     wind_speed: number
     alerts?: Array<Alert>
-    weather: Weather
+    weather: Array<Weather>
+    rain: Rain
 }
 
 export interface Rain {
@@ -41,7 +42,7 @@ export interface Alert {
 
 export interface Forecast {
     main: { temp_min: number, temp_max: number, humidity: number }
-    weather: { main: string, description: string };
+    weather: [{ main: string, description: string }];
     clouds: { all: number }
     wind: { speed: number, deg: number }
     dt_txt: string

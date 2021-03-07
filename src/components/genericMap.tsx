@@ -34,7 +34,7 @@ const GenericMacp: FC = () => {
             {position && position.lat && position.lgn ? (<>
                 <MapContainer
                     center={[position.lat, position.lgn]}
-                    zoom={14}
+                    zoom={15}
                     maxZoom={20}
                     zoomControl={false}
                     doubleClickZoom={true}
@@ -60,7 +60,7 @@ const GenericMacp: FC = () => {
                 <>
                     <MapContainer
                         center={[-13.7007945, -69.7126948]}
-                        zoom={4.4}
+                        zoom={4.499}
                         style={{ width: "100%", height: "100%" }}
                         zoomControl={false}
                         doubleClickZoom={false}
