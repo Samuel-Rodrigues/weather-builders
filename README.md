@@ -8,8 +8,8 @@
 
 ## :rocket: Sobre o desafio
 
-1. Informar os dados climáticos do usuário a partir de sua localização
-2. Informar informaçõs de endereço do usuário a partir de sua localização
+1. Informar os dados climáticos da região usuário a partir de sua localização
+2. Mostrar informaçõs de endereço do usuário a partir de sua localização
 2. É permitido atualizar os dados ao clicar no botão de atualizar informações
 
 ## :clipboard: Iniciando a aplicação React.Js
