@@ -6,11 +6,32 @@ export const IndexContainer = styled.div`
 export const CardContainer = styled.div`
     background: #191919;
     position: absolute;
-    width: 500px;
+    width: 630px;
     height: 510px;
-    top: 7vw;
+    top: 6vw;
+    left: 4vw;
     z-index: 999;
     border-radius: 22px;
+
+    @media(max-width: 800px){
+    left: 3vw;
+    width: 550px;
+   }
+
+    @media(max-width: 600px){
+    left: 1vw;
+    width: 450px;
+   }
+
+   @media(max-height: 650px){
+    top: 0vw;
+   }
+
+   @media(min-height: 900px){
+    top: 10vw;
+   }
+
+  
 `
 
 export const Cloud = styled.div`
@@ -73,7 +94,7 @@ export const Cloud = styled.div`
     }
 
     #error {
-        padding: 25px;
+        padding: 9px;
         font-size: 18px;
         font-family: Montserrat;
         font-weight: bold;
@@ -147,11 +168,15 @@ export const Weather = styled.div`
 export const ScrollDays = styled.div`
     background-color: #2a2a2f;
     overflow: scroll;
+    min-height: 150px;
     max-height: 170px;
     border-radius: 20px;
-
+    align-items: center;
+    justify-content: center;
+    
     .maginAutoLoading {
         margin: auto;
+        margin-top:45px;
     }
 `
 

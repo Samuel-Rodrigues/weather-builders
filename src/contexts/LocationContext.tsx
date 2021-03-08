@@ -30,6 +30,7 @@ export const LocationProvider = (props: any) => {
     }, [locationData])
 
     function locationRequest() {
+        setLoadingLocation(true)
         var options = {
             enableHighAccuracy: true,
             timeout: 5000,
@@ -55,8 +56,6 @@ export const LocationProvider = (props: any) => {
             setErroLocation('Este navegador não tem suporte a localização')
             setLoadingLocation(false)
         }
-
-
 
     }
 
