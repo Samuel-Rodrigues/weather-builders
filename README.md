@@ -8,14 +8,14 @@
 
 ## :rocket: Sobre o desafio
 
-1. Informar os dados climáticos do usuário a partir de sua localização
-2. Informar informaçõs de endereço do usuário a partir de sua localização
-2. É permitido atualizar os dados ao clicar no botão de atualizar informações
+1. Informar os dados climáticos de acordo com a localização do usuário
+2. Mostrar informaçõs de endereço do usuário a partir de sua localização
+2. É permitido atualizar os dados ao clicar no botão de `atualizar informações`
 
 ## :clipboard: Iniciando a aplicação React.Js
 
 1. Clone o repositório com `https://github.com/Samuel-Rodrigues/weather-builders.git`
-2. Abra um terminal entre na pasta `cd weather-builders`
+2. Abra um terminal e entre na pasta `cd weather-builders`
 3. Instale todas as dependencias com o comando `yarn install` ou `npm install`
 4. Digite `yarn start` ou `npm start`  para iniciar o projeto
 5. Uma nova aba do navegador abrirá url http://localhost:3000
