@@ -115,8 +115,8 @@ export const Card: FC = () => {
                             </span>
                         </div>
 
-                        <div>
-                            <span>
+                        <div style={{minWidth: 90}}>
+                            <span >
                                 {!forecast.rain ? (<img style={{ height: 26 }} src={noCloudIcon} alt="noCloudIcon" />) : (<img src={cloudIcon} alt="cloudIcon" />)}
                             </span>
                             <span style={{ textAlign: 'center' }}>

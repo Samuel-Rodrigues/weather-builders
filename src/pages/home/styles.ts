@@ -137,6 +137,7 @@ export const Days = styled.div`
         font-weight: bold;
         font-size: 18px;
         line-height: 32px;
+        text-align: center;
     }
 `
 
