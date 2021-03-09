@@ -104,9 +104,9 @@ export const Card: FC = () => {
                 {locationData?.forecasts?.map((forecast) => (
                     <Days key={forecast.dt_txt}>
                         <div style={{ minWidth: 80 }}>
-                            
+
                             <span id="titleDay">
-                                {format(new Date(forecast.dt_txt), 'dd/MM')}
+                                {format(new Date(forecast.dt_txt), `hh'h' '-' dd/MM`)}
                             </span>
                             <span>
                                 {format(new Date(forecast.dt_txt), 'EEEE', {
