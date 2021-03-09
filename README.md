@@ -39,7 +39,7 @@
 - 📄 **Axios** - Biblioteca Javascript para fazer requisições http
 - 📄 **leaflet react-leaflet** Lib para renderizar um mapa e mostrar o marcador com a localização atual do usuário
 - 📄 **geolocation** Bibioteca nativa Js para pegar as coordenadas a partir do browser
-- 📄 **geolocation** Bibioteca utilizada para obter endereço a partir de coordenadas
+- 📄 **react-geocode** Bibioteca utilizada para obter endereço a partir de coordenadas
 - 📄 **date-fns** Lib utilizada para converter e formatar dadas
 
 </h1>
