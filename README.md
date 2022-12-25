@@ -1,7 +1,3 @@
-<h3 align="center">
-  Feito com carinho para builders
-</h3>
-
 ## :camera: Demonstração
 <h1 align="center"> <img alt="resultado" src="https://github.com/Samuel-Rodrigues/weather-builders/blob/master/buildersGif.gif"/>
 </h1>
